@@ -1,0 +1,10 @@
+select
+user.name, user.id, max(user_status_history.created) as created, user_status_history.reason
+from user_status_history
+join user
+on user.id = user_status_history.user_id
+where user_status_history.old_status = 'ok' and
+user_status_history.new_status = 'error' and
+user_status_history.reason in
+('Validation error', 'Balance error', 'AntiFraud')
+group by user_status_history.reason;
